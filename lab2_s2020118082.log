@@ -1,0 +1,112 @@
+    1  man history
+    2  man man
+    3  man 1 password
+    4  man 1 passwd
+    5  man 5 passwd
+    6  man 1 lis
+    7  man 1 list
+    8  man list 1
+    9  man 1 ls
+   10  pwd
+   11  cd
+   12  cd ~
+   13  history
+   14  cd /etc
+   15  cd ..
+   16  ls
+   17  history
+   18  cd
+   19  ls -l
+   20  ls -al
+   21  man ls
+   22  ls -ltr
+   23  ls *.txt
+   24  cd /usr/include
+   25  history
+   26  cd
+   27  ls
+   28  cd ~
+   29  ls
+   30  cd /
+   31  ls
+   32  cd /usr
+   33  ls
+   34  cd lib
+   35  ls
+   36  cd ..
+   37  ls
+   38  cd standalone
+   39  ls
+   40  cd ..
+   41  ls
+   42  cd libexec
+   43  ls
+   44  cd ..
+   45  cd lib
+   46  ls
+   47  cd
+   48  ls
+   49  mkdir lab2
+   50  rmdir lab2
+   51  touch knu
+   52  rm -i knu
+   53  alias rm='rm -i'
+   54  touch knu
+   55  rm knu
+   56  ls
+   57  touch knu
+   58  \rm knu
+   59  ls knu
+   60  ls
+   61  cd systempro
+   62  ls
+   63  cd /usr
+   64  ls
+   65  cd local
+   66  ls
+   67  cd ..
+   68  ls
+   69  cd
+   70  cd systempro
+   71  ls
+   72  cp /usr/include/stdio.h testfile
+   73  mv testfile test
+   74  ls -l
+   75  cp test test2
+   76  ls -l te
+   77  rm test2
+   78  history
+   79  cat test
+   80  less test
+   81  head test
+   82  head -n20 test
+   83  tail test
+   84  ls al
+   85  ls -al
+   86  touch knu.txt
+   87  ls
+   88  ls -al
+   89  chmod 700 knu.txt
+   90  ls -al
+   91  chmod a+x knu.txt
+   92  ls -al
+   93  chmod 644 knu.txt
+   94  ls -al
+   95  cat test | more
+   96  ls -al > listing
+   97  cat listing
+   98  echo "KNU" >> listing
+   99  cat listing
+  100  echo "KNU" > listing
+  101  cat listing
+  102  ls -al >> listing
+  103  cat listing
+  104  wc -l < listing
+  105  cat listing 
+  106  cat listing | wc -l
+  107  grep putc /usr/include/*.h
+  108  grep putc */*.h
+  109  grep putc /*.h
+  110  grep putc *.h
+  111  ls
+  112  cat lab1_s2020118082
