@@ -1,0 +1,69 @@
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+[Inferior 1 (process 606734) exited normally]
+Breakpoint 1 at 0xaaaaaaaa0954: file ls1.c, line 31.
+The program is not being run.
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:31
+31		if ( ( dir_ptr = opendir( dirname ) ) == NULL )
+Continuing.
+[Inferior 1 (process 611396) exited normally]
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:31
+31		if ( ( dir_ptr = opendir( dirname ) ) == NULL )
+__opendir (name=0xaaaaaaaa09e8 ".") at ../sysdeps/unix/sysv/linux/opendir.c:83
+83	../sysdeps/unix/sysv/linux/opendir.c: No such file or directory.
+invalid_name (name=0xaaaaaaaa09e8 ".") at ../sysdeps/unix/sysv/linux/opendir.c:33
+33	in ../sysdeps/unix/sysv/linux/opendir.c
+__opendir (name=0xaaaaaaaa09e8 ".") at ../sysdeps/unix/sysv/linux/opendir.c:86
+86	in ../sysdeps/unix/sysv/linux/opendir.c
+__GI___open64_nocancel (file=0xaaaaaaaa09e8 ".", oflag=542720) at ../sysdeps/unix/sysv/linux/open64_nocancel.c:28
+28	../sysdeps/unix/sysv/linux/open64_nocancel.c: No such file or directory.
+31	in ../sysdeps/unix/sysv/linux/open64_nocancel.c
+39	in ../sysdeps/unix/sysv/linux/open64_nocancel.c
+No symbol "dir_ptr" in current context.
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:31
+31		if ( ( dir_ptr = opendir( dirname ) ) == NULL )
+$1 = (DIR *) 0xaaaaaaab0d70
+$2 = 0xaaaaaaaa09e8 "."
+Quit
+Breakpoint 2 at 0xaaaaaaaa099c: file ls1.c, line 34.
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:31
+31		if ( ( dir_ptr = opendir( dirname ) ) == NULL )
+Continuing.
+
+Breakpoint 2, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
+34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
+$3 = (struct dirent *) 0xfffff7ffe040 <_rtld_global>
+$4 = "\367\377\377\000\000\000\000\000\000\000\000\000\000pq\377\367\377\377", '\000' <repeats 18 times>, "\001", '\000' <repeats 217 times>
+__GI___readdir64 (dirp=0xaaaaaaab22a0) at ../sysdeps/unix/sysv/linux/readdir64.c:34
+34	../sysdeps/unix/sysv/linux/readdir64.c: No such file or directory.
+Continuing.
+
+Breakpoint 2, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
+34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
+Continuing.
+
+Breakpoint 2, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
+34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
+Continuing.
+
+Breakpoint 2, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
+34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
+$5 = "ls2.c\000\000\000\000\000\000\000\000\373\241\b\000\000\000\000\000\034MȞH\221\331;\030\000\004..\000\000\000\067\023\000\000\000\000\000\000\324\n\327\300\t\304\366X \000\bls1.c\000\000\000\000\000\000\000\000\315\023\000\000\000\000\000\000\244\300\261\021\027\037\310h \000\bgdb.ls1.log\000\000j:\000\000\000\000\000\000\212\213,h\250\233>| \000\b.ls1.c.swp\000\000\000\236\022\000\000\000\000\000\000\377\377\377\377\377\377\377\177\030\000\004.", '\000' <repeats 102 times>
+35				printf("%s\n", direntp->d_name );
