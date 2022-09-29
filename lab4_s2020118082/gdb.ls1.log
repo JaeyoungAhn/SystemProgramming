@@ -67,3 +67,20 @@ Breakpoint 2, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
 34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
 $5 = "ls2.c\000\000\000\000\000\000\000\000\373\241\b\000\000\000\000\000\034MȞH\221\331;\030\000\004..\000\000\000\067\023\000\000\000\000\000\000\324\n\327\300\t\304\366X \000\bls1.c\000\000\000\000\000\000\000\000\315\023\000\000\000\000\000\000\244\300\261\021\027\037\310h \000\bgdb.ls1.log\000\000j:\000\000\000\000\000\000\212\213,h\250\233>| \000\b.ls1.c.swp\000\000\000\236\022\000\000\000\000\000\000\377\377\377\377\377\377\377\177\030\000\004.", '\000' <repeats 102 times>
 35				printf("%s\n", direntp->d_name );
+Breakpoint 1 at 0x99c: file ls1.c, line 34.
+Starting program: /home/quaki/syspro/lab4_s2020118082/ls1 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, do_ls (dirname=0xaaaaaaaa09e8 ".") at ls1.c:34
+34			while ( ( direntp = readdir( dir_ptr ) ) != NULL )
+__GI___readdir64 (dirp=0xaaaaaaab22a0) at ../sysdeps/unix/sysv/linux/readdir64.c:34
+34	../sysdeps/unix/sysv/linux/readdir64.c: No such file or directory.
+37	in ../sysdeps/unix/sysv/linux/readdir64.c
+44	in ../sysdeps/unix/sysv/linux/readdir64.c
+51	in ../sysdeps/unix/sysv/linux/readdir64.c
+__GI___getdents64 (fd=3, buf=buf@entry=0xaaaaaaab22d0, nbytes=32768) at ../sysdeps/unix/sysv/linux/getdents64.c:32
+32	../sysdeps/unix/sysv/linux/getdents64.c: No such file or directory.
+__GI___readdir64 (dirp=0xaaaaaaab22a0) at ../sysdeps/unix/sysv/linux/readdir64.c:66
+66	../sysdeps/unix/sysv/linux/readdir64.c: No such file or directory.
+52	in ../sysdeps/unix/sysv/linux/readdir64.c
