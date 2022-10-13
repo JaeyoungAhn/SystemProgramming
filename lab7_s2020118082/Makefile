@@ -12,7 +12,5 @@ play_again2:
 play_again3: 
 	gcc -o play_again3.out play_again3.c
 
-.PHONY: clean
-
 clean:
 	rm -f *.o *.out
