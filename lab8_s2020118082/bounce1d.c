@@ -13,7 +13,7 @@
 /* some global settings main and the handler use */
 
 #define MESSAGE "hello"
-#define BLAnk	"     "
+#define BLANK	"     "
 
 void move_msg(int);
 int set_ticker(int);
@@ -29,7 +29,7 @@ int main() {
 	int c;		/* user input		*/
 	void move_msg(int);	/* handler for timer	*/
 
-	initscre();
+	initscr();
 	crmode();
 	noecho();
 	clear();
