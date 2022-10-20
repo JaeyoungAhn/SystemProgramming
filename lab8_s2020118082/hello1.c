@@ -11,11 +11,11 @@ int main() {
 	
 			/* send requests 	*/
 	clear();	/* clear screen	*/
-	move(10,20);	/* row10.col20		*/
+	move(10,20);	/* row10, col20	*/
 	addstr("Hello, world");		/* add a string	*/
 	move(LINES-1,0);		/* move to LL	*/
 
-	refresh();	/* update the screen	*/
+	refresh();
 	getch();	/* wait for user input	*/
 
 	endwin();	/* turn offo curses	*/
