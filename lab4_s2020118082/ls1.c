@@ -13,7 +13,7 @@ int main(int ac, char *av[]) {
 		do_ls( "." );
 	else
 		while ( --ac ) {
-			printf("%s\n", *++av );
+			printf("%s:\n", *++av );
 			do_ls( *av );
 		}
 

@@ -35,8 +35,6 @@ int main() {
  *						* displays nothing if records has no user name
  */
 void show_info( struct utmp *utbufp ) {
-	if ( utbufp->ut_type != USER_PROCESS )
-		return;
 
 	printf("%-8.8s", utbufp->ut_name);		/* the longname */
 	printf(" ");							/* a space		*/
