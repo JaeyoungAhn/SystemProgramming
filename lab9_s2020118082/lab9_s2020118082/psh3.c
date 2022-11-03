@@ -1,9 +1,9 @@
-/** prompting shell version 2
+/** prompting shell version 3
  **
  **		Solves the 'one-shot' problem of version 1
  			Uses execvp(), but fork()s first so that the
 			shell waits around to perform another command
-		New problem: shell catches signals. Run vi, press ^c.
+		ends the program when pressed Ctrl+D(EOF) or typed "exit"
  **/
 
 #include <stdio.h>
@@ -24,15 +24,24 @@ int main() {
 	int numargs;				/* index into array	*/
 	char argbuf[ARGLEN];		/* read stuff here	*/
 	char *makestring();			/* malloc etc		*/
+	const char* finish = "exit";
+	char* rtn_value;
 	numargs = 0;
 
 
 	while( numargs < MAXARGS ) {
 		printf("Arg[%d]? ", numargs);
-		if ( fgets(argbuf, ARGLEN, stdin) && *argbuf != '\n')
+		if ( ((rtn_value = fgets(argbuf, ARGLEN, stdin))!=NULL) && *argbuf != '\n')
+		{
 			arglist[numargs++] = makestring(argbuf);
+			if( !strcmp(arglist[numargs-1], finish) ) exit(1); // in case of exit
+		}
 		else {
-			if(numargs > 0){	/* any args?	*/
+			if(rtn_value==NULL) { // in case of EOF
+				printf("\n");	
+				exit(1);
+			}
+			else if(numargs > 0){	/* any args?	*/
 				arglist[numargs]=NULL;	/* close list	*/
 				execute( arglist );		/* do it		*/
 				numargs = 0;			/* and reset	*/	
