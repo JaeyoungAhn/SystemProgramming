@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-#define DELAY 10
+#define DELAY 2
 
 int main()
 {
