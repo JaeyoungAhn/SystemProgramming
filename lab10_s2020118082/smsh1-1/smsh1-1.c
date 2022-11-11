@@ -1,7 +1,8 @@
-/** smsh1.c small-shell version 1
+/** smsh1-1.c small-shell version 1-1
  **				first really useful version after prompting shell
  **				this one parses the command line into strings
  **				uses fork, exec, wait, and ignores signals
+ **				supports parsing multiple commands in a line
  **/
 
 #include <stdio.h>
