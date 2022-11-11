@@ -17,14 +17,12 @@ int main() {
 	int result;
 	void setup();
 	int length;
+	int nth;
 	prompt = DFL_PROMPT;
 	setup();
 
-	while( (cmdline = next_cmd(prompt, stdin)) != NULL ){
-		length = sizeof(cmdline)/sizeof(char *);
-		printf("%d", length);
-		printf("%s\n", cmdline[0]);
-		printf("%s\n", cmdline[1]);
+	while( (cmdline = next_cmd(prompt, stdin, &nth)) != NULL ){
+		length = nth;
 		for(int i=0; i<length; i++) {
 			if( (arglist = splitline(cmdline[i])) != NULL ) {
 			result = execute(arglist);
