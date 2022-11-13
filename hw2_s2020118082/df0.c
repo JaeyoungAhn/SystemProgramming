@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/vfs.h>
-//#include <sys/param.h>
-//#include <sys/mount.h>
 #include <ctype.h>
 #include <string.h>
 int main(int argc,char* argv[])
@@ -15,16 +13,17 @@ int main(int argc,char* argv[])
 
 	/*
 	 * ./df0 . -option (how original df works)
-	 * ./df0 -option . (demonstrated on the lms)
-	 * both way are possible
-	 */
+	 * ./df0 -option . (as demonstrated on the lms)
+	 * both way are possible */
 	for(int i=1; i<argc; i++) {
 		if(argv[i][0] == '-') {
 			int length = strlen(argv[i]);
 			char* pt = argv[i];
 			for(int j=1; j<length; j++) {
 				if( islower(pt[j]) ) opt = pt[j] - 32; // convert to lowercase
-				else opt = pt[j]; // in case of -bkmG, G which is last char will be assigned
+				else opt = pt[j];
+				/* in case of -bkmG, G which is last char
+				 * will be assigned just as original df works */
 			}
 		}
 		else location=argv[i];
@@ -48,7 +47,7 @@ int main(int argc,char* argv[])
 	int total_digit;
 	int used_digit;
 	int free_digit;
-	switch(opt){ // conversion
+	switch(opt){ // block unit conversion
 		case 'K':
 			block_size/=1024;
 			break;
