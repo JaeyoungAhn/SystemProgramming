@@ -35,7 +35,7 @@ int main() {
 	if ( pid == 0 )		/* child is dc */
 		be_dc(todc, fromdc);
 	else {
-		be_dc(todc, fromdc);	/* parent is ui */
+		be_bc(todc, fromdc);	/* parent is ui */
 		wait(NULL);				/* wait for child	*/
 	}
 
@@ -56,6 +56,9 @@ void be_dc(int todc[2], int fromdc[2])
 	/* setup */
 	close(todc[0]);	/* won't read from pipe to dc */
 	close(fromdc[1]); /* won't write to pipe from dc */
+
+	fpout = fdopen( todc[1], "w"); /* convert file desc- */
+	fpin = fdopen(fromdc[0], "r"); /* riptors to streams */
 	if( fpout == NULL || fpin == NULL )
 		fatal("Error converting pipes to streams");
 
