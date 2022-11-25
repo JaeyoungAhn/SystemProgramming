@@ -62,13 +62,16 @@ int main(int ac, char *av[]) {
 
 		/* open reading direction as buffered stream */
 		if( (sock_fpi = fdopen(sock_fd, "r")) == NULL )
+			oops("fdopen reading");
+
+		if(fgets(dirname, BUFSIZ-5, sock_fpi) == NULL)
 			oops("reading dirname");
 		sanitize(dirname);
 
 		/* open writing direction as buffered stream */
 		if( (sock_fpo = fdopen(sock_fd, "w")) == NULL )
 			oops("fdopen writing");
-
+		printf("%s\n", dirname);
 		sprintf(command, "ls %s", dirname);
 		if( (pipe_fp = popen(command,"r")) == NULL )
 			oops("popen");

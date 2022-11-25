@@ -42,7 +42,7 @@ int main() {
 	return 0;
 }
 
-void be_dc(int todc[2], int fromdc[2])
+void be_bc(int todc[2], int fromdc[2])
 /*
  * read from stdin and convert into RPN, send down pipe
  * then read from other pipe and print to user
@@ -82,7 +82,7 @@ void be_dc(int todc[2], int fromdc[2])
 	fclose(fpin);	/* dc will see EOF	*/
 }
 
-void bc_dc(int in[2], int out[2]) 
+void be_dc(int in[2], int out[2]) 
 /*
  * set up stdin and stdout, then execl dc
  */

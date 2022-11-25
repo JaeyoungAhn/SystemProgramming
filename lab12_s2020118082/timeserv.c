@@ -16,7 +16,7 @@
 
 int main(int ac, char *av[]) {
 	struct sockaddr_in saddr; /* build our address here */
-	struct hostent	*hp; /* this is part of out	*/
+	struct hostent	*hp; /* this is part of our	*/
 	char	hostname[HOSTLEN];	/* address	*/
 	int sock_id, sock_fd;	/* line id, file desc	*/
 	FILE *sock_fp;	/* use socket as stream	*/
