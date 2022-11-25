@@ -10,7 +10,7 @@
 #include <netdb.h>
 #include <time.h>
 #include <ctype.h>
-#include <strings.h>
+#include <string.h>
 
 #define PORTNUM 15000 /* our remote ls server port */
 #define HOSTLEN 256

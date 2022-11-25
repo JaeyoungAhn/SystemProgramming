@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <strings.h>
+#include <string.h>
 
 #define oops(msg) { perror(msg); exit(1); }
 #define PORTNUM 15000
