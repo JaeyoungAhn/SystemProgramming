@@ -27,7 +27,10 @@ int main(int ac, char *av[]) {
 	FILE *pipe_fp;				/* use popen to run ls	*/
 	char dirname[BUFSIZ];		/* from client			*/
 	char command[BUFSIZ];		/* for popen()			*/
+	char destination[BUFSIZ];
 	int dirlen, c;
+	int pipes[2];
+	int pid;
 
 	/** Step 1: ask kernel for a socket **/
 
@@ -67,18 +70,37 @@ int main(int ac, char *av[]) {
 		if(fgets(dirname, BUFSIZ-5, sock_fpi) == NULL)
 			oops("reading dirname");
 		sanitize(dirname);
-
 		/* open writing direction as buffered stream */
 		if( (sock_fpo = fdopen(sock_fd, "w")) == NULL )
 			oops("fdopen writing");
-		printf("%s\n", dirname);
+
 		sprintf(command, "ls %s", dirname);
-		if( (pipe_fp = popen(command,"r")) == NULL )
-			oops("popen");
+		if(pipe(pipes) == -1)
+			oops("pipe failed");
+
+		if( (pid = fork()) == -1 )
+			oops("fork");
+
+		if(pid >0) { // parent
+			close(pipes[1]);
+			pipe_fp = fdopen(pipes[0], "r");
+			if(pipe_fp == NULL)
+				oops("Error converting pipes to streams");
+			while( (c = getc(pipe_fp)) != EOF )
+				putc(c, sock_fpo);
+		}
+		else { // child
+			if(dup2(pipes[1],1) == -1)
+			close(pipes[0]);
+			close(pipes[1]);
+			strcpy(destination, dirname);
+			execlp("ls", "ls", destination, NULL);
+			oops("Cannot run ls");
+		}
+	//	if( (pipe_fp = popen(command,"r")) == NULL )
+	//		oops("popen");
 
 		/* transfer data from ls to socket */
-		while( (c = getc(pipe_fp)) != EOF )
-			putc(c, sock_fpo);
 		pclose(pipe_fp);
 		fclose(sock_fpo);
 		fclose(sock_fpi);
