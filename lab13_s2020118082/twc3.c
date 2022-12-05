@@ -28,6 +28,9 @@ int main(int ac, char *av[]) {
 	args2.fname = av[2];
 	args2.count = 0;
 	pthread_create(&t2, NULL, count_words, (void *) &args2);
+
+	pthread_join(t1, NULL);
+	pthread_join(t2, NULL);
 	printf("%5d: %s\n", args1.count, av[1]);
 	printf("%5d: %s\n", args2.count, av[2]);
 	printf("%5d: total words\n", args1.count+args2.count);
@@ -49,6 +52,5 @@ void *count_words(void *a) {
 		fclose(fp);
 	} else
 		perror(args->fname);
-	printf("%d\n", args->count);
 	return NULL;
 }
