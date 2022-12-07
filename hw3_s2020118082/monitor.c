@@ -56,11 +56,12 @@ int PAGELEN2=0;
 
 int main(void) {
 	
-	sigset_t mask,prev;
+//	sigset_t mask,prev;
 
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGINT);
-	sigprocmask(SIG_BLOCK, &mask, &prev);
+//	sigemptyset(&mask);
+//	sigaddset(&mask, SIGINT);
+//	sigprocmask(SIG_BLOCK, &mask, &prev);
+//
 
 	
 	int cmpfunc(const void *a, const void *b);
@@ -120,6 +121,9 @@ int main(void) {
 	unsigned char key;
 
 	
+	while(1) { // start of outer while
+	//	tcgetattr(0, &initial_settings);
+
 	new_settings = initial_settings;
 	new_settings.c_lflag &= ~ICANON;
 	new_settings.c_lflag &= ~ECHO;
@@ -132,12 +136,10 @@ int main(void) {
 
 	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
 
-	while(1) { // start of outer while
-	//	tcgetattr(0, &initial_settings);
-
 
 
 	while(1) {
+
 		if(on_switch==0) break;
 		char buf[20];
 		int numRead;
