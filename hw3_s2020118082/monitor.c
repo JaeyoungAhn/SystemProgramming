@@ -11,7 +11,30 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <sys/wait.h>
-/* In order to find how much CPU usage of each process takes up,
+/*
+ * Jaeyoung Ahn 2020118082
+ * SCSE Kyungpook National Universiy
+ *
+ * System Programming HW3
+ * 
+ * Monitoring System Resources
+ * 		|
+ * 		|
+ * 		|
+ * CPU usage + Memory Usage + Listening Sockets
+ *
+ * How to Use: Press 1,2,3 to change mode and press q to quit
+ * 
+ * mode 1 : show cpu usage and mem usage order by cpu usage descending
+ * mode 2 : show cpu usage and mem usage order by mem usage descending
+ * mode 3 : show listening sockets
+ *
+ * assume the system running the program has 4 core cpu
+ *
+ *
+ * How to Calculate Usage:
+ *
+ * In order to find how much CPU usage of each process takes up,
  * we first need to know what the global variable 'jiffies' is.
  * 
  * The global variable 'jiffies' holds the number of ticks that have occurred since the system booted.
@@ -31,33 +54,24 @@
  *
  * sum of user_usage and sys_usage equals to percentage of cpu usage each process takes up.
  *
- * 
- * By the way, how do we find if certain process is running?
- * We can use 'int kill(pid_t pid, int sig)' system call to check.
- * To do this, we first need to include <errno.h>, <sys/types.h> and <signal.h>.
- * If sig is 0, no sigal is sent but error checking.
- * (ESRCH) will be returned if the process exists..?
- *
- *
  */
 struct data {
-	int pid;
-	char filename[30];
-	double usage;
-	int total_memory;
-	int resident_memory;
-	int shared_pages;
+	int pid; // proncess number
+	char filename[30]; // process name
+	double usage; // CPU usage in percentage
+	int total_memory; // VIRT
+	int resident_memory; // RES
+	int shared_pages; // SHR
 };
 
 
-struct termios initial_settings, new_settings;
+struct termios initial_settings, new_settings; // for disabling canonical and echo mode
 
-int PAGELEN2=0;
+int PAGELEN2=0; // for assining terminal height
 
 int main(void) {
-
-	int cmpfunc(const void *a, const void *b);
-	int cmpfunc2(const void *a, const void *b);
+	int cmpfunc(const void *a, const void *b); // quick sorting order by CPU usage
+	int cmpfunc2(const void *a, const void *b); // quick sorting order by MEM usage
 
 	struct data *d;
 	struct data d_init[100000];
@@ -112,6 +126,7 @@ int main(void) {
 
 	unsigned char key;
 
+	/* disabling canonical and echo mode and make the program nonblcoking */
 	new_settings = initial_settings;
 
 	tcgetattr(0, &initial_settings);
@@ -128,40 +143,41 @@ int main(void) {
 
 
 	while(1) { // start of outer while
-	while(1) {
+	while(1) { // start of innre while
 
 
-		if(on_switch==0) break;
+		if(on_switch==0) break; // if not working as intended, just break the program
 		char buf[20];
 		int numRead;
-		initscr();
+		initscr(); // start curses
 		idx=0;
 		idx2=0;
 		idx3=0;
 		j=1;
 		temp2=0;
-		clear();	
+		clear(); // curses erase
 		move(0, 0);
-		standout();
+		standout(); // curses make letters fancy
 		sprintf(str2, "  PID\t\tCOMMAND\t   %%CPU\t    VIRT     RES     SHR     %%MEM  \n");	
 	
-		addstr(str2);
-		standend();
+		addstr(str2); // curses show string onto screen
+		standend(); // curses off making letters fancy
 
-		total = fopen("/proc/stat", "r");
-
+		total = fopen("/proc/stat", "r"); // where we can get total CPU jiffies info
+						  
+		/* parse it */
 		fscanf(total, "%s %lu %lu %lu %lu %lu %lu %lu %lu %lu", cpu_name,
 				&total_values[0], &total_values[1], &total_values[2],
 				&total_values[3], &total_values[4], &total_values[5],
 				&total_values[6], &total_values[7], &total_values[8]);
 		total_time_before=0;
 		for(int i=0; i<9; i++) {
-			total_time_before+=total_values[i];
+			total_time_before+=total_values[i]; // this is the current total jiffies
 		}
-		total_time_before/=4;
+		total_time_before/=4; // assuming that we are running on 4 core cpu
 		fclose(total);
 
-		for(int i=0; i<100000; i++) {
+		for(int i=0; i<100000; i++) { // to find out valid process id
 
 			memset(str, 0, 1000*sizeof(char));
 			memset(number, 0, 8*sizeof(char));
@@ -170,14 +186,15 @@ int main(void) {
 			strcat(str, number);
 			strcat(str, "/stat");
 	
-			if( access(str, F_OK) != 0 )
+			if( access(str, F_OK) != 0 ) // if /proc/[i]/stat isn't accessible
 				continue;
 
-			eachProcess = fopen(str, "r");
+			eachProcess = fopen(str, "r"); // if accessible, open it
+			/* just throw away some variables that won't be used in the future */
 			fscanf(eachProcess, "%d %s %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu",
 					&pid, filename, &state, &ppid, &trash1[0], &trash1[1], &trash1[2],
 					&trash1[3], &trash2, &trash3[0], &trash3[1], &trash3[2], &trash3[3],
-					&usertime, &systemtime);
+					&usertime, &systemtime); 
 			d_init[idx].pid = pid;
 
 			utime_before[idx] = usertime;
@@ -186,8 +203,9 @@ int main(void) {
 		}
 		d = (struct data*)malloc(idx * sizeof(struct data));
 		
-		sleep(1);
+		sleep(1); // new measurement below after one second!
 		
+		/* the procedure are similar */
 		total = fopen("/proc/stat", "r");
 		
 		fscanf(total, "%s %lu %lu %lu %lu %lu %lu %lu %lu %lu", cpu_name,
@@ -229,6 +247,8 @@ int main(void) {
 					&usertime, &systemtime);
 
 			fscanf(eachMemory, "%d %d %d", &d[idx2].total_memory, &d[idx2].resident_memory, &d[idx2].shared_pages);			
+
+			/* doing calculation */
 			user_usage=100*(double)(usertime - utime_before[idx2]) / (double)(total_time_after - total_time_before);
 			sys_usage=100*(double)(systemtime - stime_before[idx2]) / (double)(total_time_after - total_time_before);
 
@@ -246,7 +266,7 @@ int main(void) {
 				qsort((struct data*)d, idx2, sizeof(d[0]), cmpfunc2);
 			}
 
-
+			/* show the reuslt on screen neatly */
 			if (ioctl(0, TIOCGWINSZ, &wbuf) != -1 ) PAGELEN = wbuf.ws_row-2;
 			PAGELEN2 = PAGELEN;
 			while(PAGELEN) {
@@ -304,7 +324,7 @@ int main(void) {
 
 	memset(buf, 0, 20*sizeof(char));
 	numRead = read(0, buf, 4);
-	if (numRead > 0) {
+	if (numRead > 0) { // nonblocking input
 		if(buf[0] == 'q') {
 			out_flag=1;
 			break;
@@ -337,14 +357,14 @@ int main(void) {
 	pid = fork();
 
 	if(pid != 0) {
-		be_receiver(from_sender);
+		be_receiver(from_sender); // receive char* from sender
 		wait(NULL);
 	}
 	else {
-		be_sender(from_sender);
+		be_sender(from_sender); // send to receiver the string obtained from execlp
 	}
 
-	while(1) {
+	while(1) { // nonblocking input
 		buf = getch();
 		if(buf == 'q') {
 			out_flag=1;
@@ -367,8 +387,8 @@ int main(void) {
 
 	} // end of outer while 
 	endwin();
-	tcsetattr(0,TCSANOW, &initial_settings);
-	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | ~O_NONBLOCK);
+	tcsetattr(0,TCSANOW, &initial_settings); // back to original setting
+	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | ~O_NONBLOCK); // back to original setting
 	return 0;
 } // end of main
 
