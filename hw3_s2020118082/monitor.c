@@ -55,15 +55,7 @@ struct termios initial_settings, new_settings;
 int PAGELEN2=0;
 
 int main(void) {
-	
-//	sigset_t mask,prev;
 
-//	sigemptyset(&mask);
-//	sigaddset(&mask, SIGINT);
-//	sigprocmask(SIG_BLOCK, &mask, &prev);
-//
-
-	
 	int cmpfunc(const void *a, const void *b);
 	int cmpfunc2(const void *a, const void *b);
 
@@ -120,11 +112,9 @@ int main(void) {
 
 	unsigned char key;
 
-	
-	while(1) { // start of outer while
-	//	tcgetattr(0, &initial_settings);
-
 	new_settings = initial_settings;
+
+	tcgetattr(0, &initial_settings);
 	new_settings.c_lflag &= ~ICANON;
 	new_settings.c_lflag &= ~ECHO;
 	new_settings.c_lflag &= ~ISIG;
@@ -137,8 +127,9 @@ int main(void) {
 	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
 
 
-
+	while(1) { // start of outer while
 	while(1) {
+
 
 		if(on_switch==0) break;
 		char buf[20];
@@ -307,13 +298,10 @@ int main(void) {
 				temp2 = d[idx3].usage;	
 				temp3 = d[idx3].resident_memory;
 				idx3++;
-				
 						
 			}
 			free(d);
 
-	//char buf[20];
-	//fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
 	memset(buf, 0, 20*sizeof(char));
 	numRead = read(0, buf, 4);
 	if (numRead > 0) {
@@ -334,13 +322,9 @@ int main(void) {
 	}
 	 
 
-	} // end of first inner while
+	} // end of inner while
 	on_switch=0;
-//	tcsetattr(0,TCSANOW, &initial_settings);
-//	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | ~O_NONBLOCK);
 	move(0,0);
-	//endwin();
-//	initscr();
 
 	if(out_flag==1) break;
 	char buf;
@@ -354,7 +338,6 @@ int main(void) {
 
 	if(pid != 0) {
 		be_receiver(from_sender);
-		//memset(buf, 0, sizeof(char));
 		wait(NULL);
 	}
 	else {
@@ -382,12 +365,10 @@ int main(void) {
 		
 	if(out_flag==1) break;
 
-	} // end of first outer while
+	} // end of outer while 
+	endwin();
 	tcsetattr(0,TCSANOW, &initial_settings);
 	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | ~O_NONBLOCK);
-	sleep(1);
-//	sigprocmask(SIG_SETMASK, &prev,0);
-	endwin();
 	return 0;
 } // end of main
 
